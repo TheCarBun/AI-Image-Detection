@@ -1,11 +1,6 @@
 import streamlit as st
-from streamlit import session_state as sst
-
-import requests, os
-from dotenv import load_dotenv
-load_dotenv()
-
-token = os.getenv('hf_token')
+import requests
+token = st.secrets['hf_token']
 
 API_URL = "https://api-inference.huggingface.co/models/umm-maybe/AI-image-detector"
 headers = {"Authorization": f"Bearer {token}"}
@@ -15,7 +10,6 @@ headers = {"Authorization": f"Bearer {token}"}
 def get_ai_probability(img_data): # get probability for image being AI generated
     response = requests.post(API_URL, headers=headers, data=img_data)
     prob_json = response.json()
-    print(prob_json)
     for item in prob_json:
         if item['label'] == 'artificial':
             return item['score']
