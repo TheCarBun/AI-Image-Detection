@@ -64,6 +64,14 @@ def main():
         unsafe_allow_html=True,
         help="This is the help tooltip. Testing this rn"
     )
+    st.markdown('''
+                <style>
+                .sidebar .sidebar-content {
+                width: 550px;
+                }
+                </style>
+                ''',
+                unsafe_allow_html=True)
 
     # Page Title
     st.title(body="✨ AI Image Detector")
