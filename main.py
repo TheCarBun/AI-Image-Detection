@@ -45,6 +45,7 @@ def get_description(probability):
     return description
 
 def main():
+    # Page Config
     st.set_page_config(
         page_title="AI Image Detection", 
         page_icon='🎨',
@@ -52,10 +53,23 @@ def main():
             "Get help": None,
             "Report a bug" : None,
             "About" : "# AI Image Detector\n### Model used:\n[umm-maybe/AI-image-detector](https://huggingface.co/umm-maybe/AI-image-detector)\n### Made by:\nSubhopriyo Badyakar \n### Socials:\n* [LinkedIn](https://www.linkedin.com/in/subhopriyo/)\n* [X(Twitter)](https://x.com/subhopriyo)"
-        })
+        },
+        initial_sidebar_state= "expanded")
     
+    # Sidebar Content
+    with open('README.md', 'r') as f:
+        readme = f.read()
+    st.sidebar.markdown(
+        body= str(readme),
+        unsafe_allow_html=True,
+        help="This is the help tooltip. Testing this rn"
+    )
+
+    # Page Title
     st.title(body="✨ AI Image Detector")
     prob_value = 0
+
+    # Container for uploading Image
     with st.container(border=True):
         st.info(body="Upload an Image to check if it's made using AI", icon="🎨")
         if image := st.file_uploader(label="Upload an Image", type=['.jpeg', '.jpg', '.png'], help="Upload image to check if it's AI or human made", label_visibility="collapsed"):
@@ -63,8 +77,8 @@ def main():
                 with st.spinner(text="Analyzing Image"):
                     prob_value = get_ai_probability(image.read())
                     prob_value = round(prob_value, 2)
-        # else:
-        #     st.info(icon='😓', body="Upload an Image")
+
+    # Container for displaying Output
     if image and prob_value!=0:
         with st.container(border=True):
             col1, col2 = st.columns([3,7])
@@ -72,11 +86,11 @@ def main():
                 st.image(image)
             with col2:
                 if prob_value>=0.7:
-                    st.success(f"Score = {(prob_value*100)}% AI Generated", icon='🤖')
+                    st.success(f"Confidence Score = {(prob_value*100)}%", icon='🤖')
                 elif prob_value>=0.3 and prob_value<0.7:
-                    st.warning(f"Score = {(prob_value*100)}% AI Generated", icon='🤔')
+                    st.warning(f"Confidence Score = {(prob_value*100)}%", icon='🤔')
                 else:
-                    st.error(f"Score = {(prob_value*100)}% AI Generated", icon='✌🏻')
+                    st.error(f"Confidence Score = {(prob_value*100)}%", icon='✌🏻')
                 st.markdown(get_description(prob_value))
 
 
