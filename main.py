@@ -66,7 +66,7 @@ def main():
     )
     st.markdown('''
                 <style>
-                .sidebar .sidebar-content {
+                section[data-testid="st.Sidebar"] {
                 width: 550px;
                 }
                 </style>
